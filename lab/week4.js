@@ -1,29 +1,49 @@
-// Week 4 lab – Similar to last week's lab – but without the help!
+// Week 4 Lab
 
-// The provided code now goes out to the Internet to get our products data.
-// You can visit the provided URL – https://kiei451.com/api/products.json –
+// The provided code goes out to the Internet to get our products data.
+// You can visit the provided URL – https://kiei451.com/api/products.json –
 // in Chrome to see what the data looks like.
 
 // Write a loop to iterate through the product data; each iteration of the loop
-// should call a function called renderProduct, which accepts an object representing
-// a single product object as input, and appends HTML to an existing element on the page
+// should add each product to the document, by appending HTML to an existing element on the page
 // with the class "products". You can use the existing HTML in the "products" element
 // as a template, deleting it when you're finished.
 
-// 🔥 define your renderProduct function here
+// Write the recipe (algorithm) in the comments, then write the code!
 
-async function pageLoaded() {
+window.addEventListener(`DOMContentLoaded`, async function() {
   let response = await fetch('https://kiei451.com/api/products.json')
   let json = await response.json()
 
   // writes the returned JSON to the console
   console.log(json)
-  
-  // 🔥 start here: write code to loop through the products; each
-  // iteration of the loop should call your renderProduct function
-  // make it work first; then extract to the separate renderProduct
-  // function after it's 100% working without it
-  
-}
 
-window.addEventListener('DOMContentLoaded', pageLoaded)
+  // Recipe:
+
+  // Create a variable for the products data
+  let products = json.products
+
+  // Loop through the products data
+  for (let i=0; i < products.length; i++) {
+    // Create a variable to store each product in memory
+    let product = products[i]
+
+    // Create a variable for the HTML element we're going to add to
+    let productsElement = document.querySelector(`.products`)
+
+    // Insert HTML into the products element, using the data from each product
+    productsElement.insertAdjacentHTML(`beforeend`, `
+      <div class="p-4 w-full md:w-1/2 lg:w-1/3">
+        <div class="border h-full p-4 flex flex-col">
+          <h2 class="text-lg font-bold mb-4">${product.name}</h2>
+          <div class="mb-4"><img src="${product.image}">
+          </div>
+          <div class="mb-4 text-gray-900">
+            ${product.description}
+          </div>
+          <div class="mt-auto text-purple-500 text-2xl">$${product.price}</div>
+        </div>
+      </div>
+    `)
+  }
+})
